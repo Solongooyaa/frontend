@@ -46,45 +46,90 @@ export default function Home() {
     setNewMovie(data);
   }
   async function updateMovie(id: number) {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/update${id}`,
-      {
-        method: "PUT",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/update/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name, // Хэрэглэгчийн оруулсан нэрийг шинэчилнэ
+          }),
+        }
+      );
+      if (res.ok) {
+        getMovies(); // Жагсаалтыг шинэчилнэ
+      } else {
+        console.error("Failed to update movie");
       }
-    );
-    const data = await res.json();
+    } catch (error) {
+      console.error("Error updating movie:", error);
+    }
   }
+  // async function updateMovie(id: number) {
+  //   const res = await fetch(
+  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/update${id}`,
+  //     {
+  //       method: "PUT",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   const data = await res.json();
+  // }
   async function deleteMovie(id: number) {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (res.ok) {
+        getMovies(); // Жагсаалтыг шинэчилнэ
+      } else {
+        console.error("Failed to delete movie");
       }
-    );
-    const data = await res.json();
-    deleteMovie(data);
-    // if (res) {
-    //   getMovies();
-    //   console.log(res);
-    // } else {
-    //   alert("failed");
-    // }
+    } catch (error) {
+      console.error("Error deleting movie:", error);
+    }
   }
+  // async function deleteMovie(id: number) {
+  //   const res = await fetch(
+  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/${id}`,
+  //     {
+  //       method: "DELETE",
+  //       headers: {
+  //         Accept: "application/json",
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   );
+  //   const data = await res.json();
+  //   deleteMovie(data);
+  // if (res) {
+  //   getMovies();
+  //   console.log(res);
+  // } else {
+  //   alert("failed");
+  //   // }
+  // }
   useEffect(() => {
     getMovies();
     console.log(movies);
   }, []);
   return (
     <div>
-      <div className="w-[300px] border">
+      <div className="w-[400px] h-[200px] border">
         <div className="button-add">
           <button
             onClick={() => {
@@ -131,13 +176,20 @@ export default function Home() {
               >
                 Edit
               </button>
+              <input
+                type="text"
+                placeholder="New..."
+                onChange={(e) => setName(e.target.value)}
+                className="border rounded"
+              />
+
               <button
                 className="border rounded"
                 onClick={() => {
                   deleteMovie(movie.id);
                 }}
               >
-                delete
+                Delete
               </button>
             </div>
           </div>
