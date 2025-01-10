@@ -56,32 +56,17 @@ export default function Home() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name, // Хэрэглэгчийн оруулсан нэрийг шинэчилнэ
+            name,
           }),
         }
       );
-      if (res.ok) {
-        getMovies(); // Жагсаалтыг шинэчилнэ
-      } else {
-        console.error("Failed to update movie");
-      }
+
+      getMovies();
     } catch (error) {
       console.error("Error updating movie:", error);
     }
   }
-  // async function updateMovie(id: number) {
-  //   const res = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/update${id}`,
-  //     {
-  //       method: "PUT",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   const data = await res.json();
-  // }
+
   async function deleteMovie(id: number) {
     try {
       const res = await fetch(
@@ -94,35 +79,12 @@ export default function Home() {
           },
         }
       );
-      if (res.ok) {
-        getMovies(); // Жагсаалтыг шинэчилнэ
-      } else {
-        console.error("Failed to delete movie");
-      }
+
+      getMovies();
     } catch (error) {
       console.error("Error deleting movie:", error);
     }
   }
-  // async function deleteMovie(id: number) {
-  //   const res = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BACKEND_URL}/movies/${id}`,
-  //     {
-  //       method: "DELETE",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   );
-  //   const data = await res.json();
-  //   deleteMovie(data);
-  // if (res) {
-  //   getMovies();
-  //   console.log(res);
-  // } else {
-  //   alert("failed");
-  //   // }
-  // }
   useEffect(() => {
     getMovies();
     console.log(movies);
